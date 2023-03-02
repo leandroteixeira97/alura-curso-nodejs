@@ -6,10 +6,10 @@ function handleError(error) {
 }
 
 async function getFile(path) {
-    const encoding = 'utf-8';
     try {
+        const encoding = 'utf-8';
         const response = await fs.promises.readFile(path, encoding);
-        extractLinks(response);
+        return extractLinks(response);
     } catch (error) {
         handleError(error);
     }
@@ -21,6 +21,7 @@ function extractLinks(text) {
     const results = captures.map((capture) => {
         return { [capture[1]]: capture[2] };
     });
-    console.log(results)
+    return results.length !== 0 ? results : 'There are no links in the given text!';
 }
-getFile('./files/text.md');
+
+export default getFile;
